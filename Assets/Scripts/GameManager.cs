@@ -11,6 +11,12 @@ public class GameManager : MonoBehaviour
     bool endGame = false;
     bool win = false;
 
+    public int points;
+
+    public int redKeys = 0;
+    public int greenKeys = 0;
+    public int goldKeys = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +42,8 @@ public class GameManager : MonoBehaviour
                 PauseGame();
             }
         }
+
+        PickUpCheck();
     }
     void PauseGame()
     {
@@ -78,6 +86,47 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log("You Lose!!! Reload?");
+        }
+    }
+    
+    public void AddPoints(int point)
+    {
+        points += point;
+    }
+
+    public void AddTime(int addedTime)
+    {
+        timeToEnd += addedTime;
+    }
+
+    public void FreezeTime(int freeze)
+    {
+        CancelInvoke("Stopper");
+        InvokeRepeating(nameof(Stopper), freeze, 1);
+    }
+    public void AddKey(KeyColor color)
+    {
+        if (color == KeyColor.Red)
+        {
+            redKeys++;
+        }
+        else if(color == KeyColor.Green)
+        {
+            greenKeys++;
+        }
+        else if(color == KeyColor.Gold)
+        {
+            goldKeys++;
+        }
+    }
+
+    void PickUpCheck()
+    {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("Actual Time: " + timeToEnd);
+            Debug.Log("Key red: " + redKeys + " green: " + greenKeys + " gold: " + goldKeys);
+            Debug.Log("Points: " + points);
         }
     }
 }

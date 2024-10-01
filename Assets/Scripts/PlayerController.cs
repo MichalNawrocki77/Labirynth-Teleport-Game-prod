@@ -21,11 +21,7 @@ public class PlayerController : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(groundCheck.position,
-                            transform.TransformDirection(Vector3.down),
-                            out hit,
-                            0.4f,
-                            groundMask))
+        if (Physics.Raycast(groundCheck.position,transform.TransformDirection(Vector3.down), out hit, 0.4f,  groundMask))
         {
             string terrainType;
             terrainType = hit.collider.gameObject.tag;
@@ -45,13 +41,18 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-
-
-
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;
         characterController.Move(move * speed * Time.deltaTime);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.gameObject.tag == "PickUp")
+        {
+            hit.gameObject.GetComponent<PickUp>().Picked();
+        }
     }
 }
